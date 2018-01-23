@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/fondo_degradacion"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        <FrameLayout
+            android:id="@+id/fl_imagen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
+            android:layout_above="@+id/tv_nombre"
+            android:layout_marginBottom="4dp">
+
+            <ImageView
+                android:maxHeight="200dp"
+                android:id="@+id/imagen_extendida"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tv_nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_detalles"
+        android:layout_marginBottom="10dp"
+        android:layout_alignStart="@+id/bt_hacer_pedido"
+        android:layout_centerVertical="true"
+        android:text="Esto es es el nombre del producto"
+        android:textColor="@color/negro" />
+    <TextView
+        android:layout_alignLeft="@+id/tv_nombre"
+        android:id="@+id/tv_detalles"
+        android:layout_above="@+id/bt_cantidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <Button
+        android:id="@+id/bt_cantidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bt_aclaracion"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/color_mostaza"
+        android:text="Cantidad" />
+
+    <Button
+        android:id="@+id/bt_aclaracion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bt_hacer_pedido"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/color_mostaza"
+        android:text="Aclaraciones" />
+
+    <Button
+
+        android:id="@+id/bt_hacer_pedido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_button"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@color/color_morado"
+        android:text="HACER PEDIDO"
+        android:textColor="@color/color_piel" />
+
+    <android.support.design.widget.FloatingActionButton
+
+        android:id="@+id/fab_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_action_mas" />
+
+    />
+
+</RelativeLayout>

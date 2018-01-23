@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <item
+        android:id="@+id/navigation_que_pedir"
+        android:icon="@drawable/ic_action_que_pedir"
+        android:title="@string/title_que_pedir" />
+    <item
+        android:id="@+id/navigation_inicio"
+        android:icon="@drawable/ic_action_reciente"
+        android:title="@string/title_inicio" />
+
+
+    <item
+        android:id="@+id/navigation_mi_cuenta"
+        android:icon="@drawable/ic_action_cuenta"
+        android:title="@string/title_mi_cuenta" />
+
+</menu>

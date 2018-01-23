@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">SantaBurguerSF</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_inicio">Inicio</string>
+    <string name="title_que_pedir">¿Que Pedir?</string>
+    <string name="title_mi_cuenta">Mi Cuenta</string>
+    <string name="action_settings">Settings</string>
+
+    <!--
+    <string name="title_section1">Teléfonos</string>
+    <string name="title_section2">Tablets</string>
+    <string name="title_section3">Portátiles</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_shop">Carrito De Compras</string>
+
+-->
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_promo">promo</string>
+</resources>

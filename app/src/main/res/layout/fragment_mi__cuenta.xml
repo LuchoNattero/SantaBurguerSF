@@ -1,0 +1,24 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.lucia.santaburguersf.Fragment.Mi_Cuenta">
+
+    <!-- TODO: Update blank fragment layout -->
+
+<RelativeLayout
+    android:id="@+id/rl_mi_cuenta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ListView
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lv_informacion"
+        android:layout_marginBottom="200dp"/>
+
+
+</RelativeLayout>
+
+</FrameLayout>

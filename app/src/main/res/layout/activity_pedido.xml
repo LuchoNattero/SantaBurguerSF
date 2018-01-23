@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.lucia.santaburguersf.Pedido"
+    android:background="@drawable/fondo_degradacion">
+
+
+    <ListView
+
+        android:id="@+id/lv_pedido"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bt_Confirmar"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/sombra"
+        android:layout_above="@+id/bt_Confirmar"
+
+        android:layout_marginHorizontal="5dp"
+
+        />
+    <Button
+        android:id="@+id/bt_Confirmar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bt_cancelar_pedido"
+        android:layout_centerHorizontal="true"
+        android:text="Confirmar"
+        android:background="@color/color_mostaza"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="5dp"
+        />
+
+    <Button
+        android:id="@+id/bt_cancelar_pedido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Cancelar"
+        android:background="@color/color_morado"
+        android:textColor="@color/color_piel"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="5dp"
+        />
+
+
+</RelativeLayout>

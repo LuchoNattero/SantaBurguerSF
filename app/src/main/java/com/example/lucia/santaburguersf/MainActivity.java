@@ -48,6 +48,8 @@ public class MainActivity extends FragmentActivity {
         BottomNavigationView navigation =  findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Lista_Menu lm = new Lista_Menu();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fm_principal,lm).commit();
     }
 
 }

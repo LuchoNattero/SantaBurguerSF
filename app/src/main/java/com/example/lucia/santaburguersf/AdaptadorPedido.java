@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.example.lucia.santaburguersf.Fragment.UnPedido;
 
 import java.util.List;
 
@@ -20,22 +20,22 @@ import java.util.List;
 public class AdaptadorPedido extends BaseAdapter {
 
     private Context context;
-    private List<Hamburguesas> lista_hamburguesas;
+    private List<UnPedido> lista_pedidos;
 
     public AdaptadorPedido(Context c){this.context = c;}
-    public AdaptadorPedido(Context c, List<Hamburguesas> listHa){
+    public AdaptadorPedido(Context c, List<UnPedido> listPe){
         this.context = c;
-        this.lista_hamburguesas = listHa;
+        this.lista_pedidos = listPe;
     }
 
     @Override
     public int getCount() {
-        return lista_hamburguesas.size();
+        return lista_pedidos.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return lista_hamburguesas.get(position);
+        return lista_pedidos.get(position);
     }
 
     @Override
@@ -56,25 +56,14 @@ public class AdaptadorPedido extends BaseAdapter {
         TextView nombre = (TextView) convertView.findViewById(R.id.tv_nombre_pedido);
         TextView cantidad = convertView.findViewById(R.id.tv_aclaracion_pedido);
 
-        Hamburguesas hamburguesa = (Hamburguesas) getItem(position);
+        UnPedido pedido = (UnPedido) getItem(position);
 
-//        imagen = hamburguesa.getIdDrawable();
 
-        //ImageView imgView=(ImageView) findViewById(R.id.imgView);
-
-        Drawable drawable  =imagen.getResources().getDrawable(hamburguesa.getIdDrawable());
+        Drawable drawable  = imagen.getResources().getDrawable(pedido.getHamburguesa().getIdDrawable());
         imagen.setImageDrawable(drawable);
 
-        nombre.setText(hamburguesa.getNombre());
-        cantidad.setText(hamburguesa.getDetalle());
-
-//        final Hamburguesas item = getItem(position);
-//        Glide.with(imagenCoche.getContext())
-//                .load(item.getIdDrawable())
-//                .into(imagenCoche);
-
-//        nombreCoche.setText(item.getNombre());
-
+        nombre.setText(pedido.getHamburguesa().getNombre());
+        cantidad.setText(pedido.getHamburguesa().getDetalle());
         return convertView;
 
     }

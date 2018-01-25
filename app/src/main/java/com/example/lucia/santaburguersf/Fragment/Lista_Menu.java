@@ -50,7 +50,7 @@ public class Lista_Menu extends Fragment{
     private GridView gridView;
     private AdaptadorHamburguesas adaptador;
     private View MiInflater;
-    private ArrayList<Hamburguesas> listaPedidos = new ArrayList();
+    private ArrayList<UnPedido> listaPedidos = new ArrayList();
 
 
     public Lista_Menu() {
@@ -137,12 +137,12 @@ public class Lista_Menu extends Fragment{
                 // Si es así mostramos mensaje de cancelado por pantalla.
                 case RESULT_OK:
 
+//
+//                    String aux1 = (data.getExtras().getString("nombre"));
+//                    String aux2 = (data.getExtras().getString("detalle"));
+//                    int aux3 = (data.getExtras().getInt("drawable"));
 
-                    String aux1 = (data.getExtras().getString("nombre"));
-                    String aux2 = (data.getExtras().getString("detalle"));
-                    int aux3 = (data.getExtras().getInt("drawable"));
-
-                    Hamburguesas ham = new Hamburguesas(aux1,aux3,aux2);
+                    UnPedido ham = (UnPedido) data.getSerializableExtra("pedido");
 
 //                    ham.setNombre(aux1);
 //                    ham.setDetalle(aux2);

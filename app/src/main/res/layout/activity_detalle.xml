@@ -10,8 +10,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="@dimen/size_fab"
+        android:background="@color/color_mostaza"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -59,7 +59,8 @@
         android:layout_marginBottom="5dp"
         android:layout_marginHorizontal="20dp"
         android:background="@color/color_mostaza"
-        android:text="Cantidad" />
+        android:text="Cantidad"
+        android:clickable="true"/>
 
     <Button
         android:id="@+id/bt_aclaracion"

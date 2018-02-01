@@ -1,21 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.lucia.santaburguersf.Pedido"
-    android:background="@drawable/fondo_degradacion">
+    android:background="@drawable/fondo_degradacion"
+    >
+    <android.support.v7.widget.Toolbar
+    android:id="@+id/tb_pedido"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:elevation="4dp"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    android:background="@color/color_mostaza"
 
+    />
 
     <ListView
-
+        android:layout_below="@+id/tb_pedido"
         android:id="@+id/lv_pedido"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bt_Confirmar"
+        android:layout_height="180dp"
         />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/sombra"
+        android:layout_below="@+id/lv_pedido"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/negro"
+        android:text="TELÉFONO"
+        android:id="@+id/tv_telefono"
+        android:layout_below="@+id/lv_pedido"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ed_telefono"
+        android:layout_below="@+id/tv_telefono"
+        android:phoneNumber="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_domicilio"
+        android:textColor="@color/negro"
+        android:text="AÑADIR DIRECCIÓN"
+        android:textSize="16dp"
+        android:layout_below="@+id/ed_telefono"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        />
+    <ToggleButton
+
+        android:id="@+id/tb_ubicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="Ubicación manual"
+        android:textOn="ubicacion automatica"
+        android:layout_below="@+id/tv_domicilio"
+        android:layout_centerInParent="true"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dirección"
+        android:textColor="@color/color_morado"
+        android:id="@+id/tv_direccion"
+        android:layout_below="@+id/tb_ubicacion"
+        android:layout_marginLeft="10dp"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_direccion"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+
+        />
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="5dp"
@@ -31,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/bt_cancelar_pedido"
         android:layout_centerHorizontal="true"
-        android:text="Confirmar"
+        android:text="realizar pedido"
         android:background="@color/color_mostaza"
         android:layout_marginBottom="5dp"
         android:layout_marginHorizontal="5dp"

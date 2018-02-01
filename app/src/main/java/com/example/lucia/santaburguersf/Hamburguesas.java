@@ -3,6 +3,9 @@ package com.example.lucia.santaburguersf;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.io.Serializable;
 
 /**
@@ -12,25 +15,42 @@ import java.io.Serializable;
 public class Hamburguesas implements Serializable {
 
     private String nombre;
-    private int idDrawable;
-
+    private int precio;
+    private String refImagen;
     private String detalle;
+    StorageReference storageReferenceHamburguesa;
 
     public Hamburguesas(){}
 
     public Hamburguesas(String nombre, int idDrawable) {
         this.nombre = nombre;
-        this.idDrawable = idDrawable;
+        this.precio = idDrawable;
     }
 
     public Hamburguesas(String nombre, int idDrawable,String de) {
         this.nombre = nombre;
-        this.idDrawable = idDrawable;
-        this.detalle = de;
+        this.precio = idDrawable;
+        this.refImagen = de;
     }
 
     public Hamburguesas(String nombre) {
         this.nombre = nombre;
+    }
+
+    public StorageReference getStorageReferenceHamburguesa() {
+        return storageReferenceHamburguesa;
+    }
+
+    public void setStorageReferenceHamburguesa(StorageReference storageReferenceHamburguesa) {
+        this.storageReferenceHamburguesa = storageReferenceHamburguesa;
+    }
+
+    public String getRefImagen() {
+        return refImagen;
+    }
+
+    public void setRefImagen(String refImagen) {
+        this.refImagen = refImagen;
     }
 
 
@@ -38,8 +58,8 @@ public class Hamburguesas implements Serializable {
         this.nombre = nombre;
     }
 
-    public void setIdDrawable(int idDrawable) {
-        this.idDrawable = idDrawable;
+    public void setPrecio(int idDrawable) {
+        this.precio = idDrawable;
     }
 
     public void setDetalle(String detalle) {
@@ -54,24 +74,15 @@ public class Hamburguesas implements Serializable {
         return nombre;
     }
 
-    public int getIdDrawable() {
-        return idDrawable;
+    public int getPrecio() {
+        return precio;
     }
 
     public int getId() {
         return nombre.hashCode();
     }
 
-    public static Hamburguesas[] ITEMS_2 = {
-            new Hamburguesas("Santa Catalina",R.drawable.santa_catalina),
-            new Hamburguesas("Santa Burguer",R.drawable.santa_burgue),
-            new Hamburguesas("Santa Monica",R.drawable.santa_monica_2),
-            new Hamburguesas("Sweet Burguer",R.drawable.sweet_burger),
-            new Hamburguesas("Veggie Buerguer",R.drawable.veggie_burguer_2),
-            new Hamburguesas("Doble Clasica",R.drawable.doble_clasica_2),
 
-
-    };
     public static Hamburguesas[] ITEMS = {
             new Hamburguesas("Santa Catalina",R.drawable.santa_catalina,"detalle del producto"),
             new Hamburguesas("Santa Burguer",R.drawable.santa_burgue,"detalle del producto"),
@@ -82,6 +93,11 @@ public class Hamburguesas implements Serializable {
 
 
     };
+
+//    public static Hamburguesas {
+//
+//
+//    }
 
     /**
      * Obtiene item basado en su identificador

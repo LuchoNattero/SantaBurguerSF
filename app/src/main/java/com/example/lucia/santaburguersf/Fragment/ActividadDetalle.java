@@ -8,15 +8,21 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.lucia.santaburguersf.Hamburguesas;
 import com.example.lucia.santaburguersf.R;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+
 
 
 public class ActividadDetalle extends AppCompatActivity implements View.OnClickListener{
@@ -28,13 +34,16 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
     private Intent intent;
     private TextView detalles;
     private TextView nombre;
-    private Button aclaracion;
+    private String aclaracion_dialogo;
+    private int cantidad_dialogo = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle);
         intent = getIntent();
+
+
         FloatingActionButton fab =  findViewById(R.id.fab_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,24 +53,28 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
                     Hamburguesas h = new Hamburguesas();
                     UnPedido nuevo_pedido = new UnPedido();
 
-//                    intent.putExtra("nombre", itemDetallado.getNombre());
-//                    intent.putExtra("drawable",itemDetallado.getIdDrawable());
-//                    intent.putExtra("detalle",itemDetallado.getDetalle());
-
                     String aux1 = (itemDetallado.getNombre());
                     String aux2 = (itemDetallado.getDetalle());
-                    int aux3 = (itemDetallado.getIdDrawable());
+                    String aux4 = (itemDetallado.getRefImagen());
+                    int aux5 = (itemDetallado.getPrecio());
+//                    StorageReference strf = itemDetallado.getStorageReferenceHamburguesa();
 
 
-                    h.setIdDrawable(aux3);
                     h.setDetalle(aux2);
                     h.setNombre(aux1);
+                    h.setRefImagen(aux4);
+                    h.setPrecio(aux5);
+//                    h.setStorageReferenceHamburguesa(strf);
 
                     nuevo_pedido.setHamburguesa(h);
+                    nuevo_pedido.setAclaracion(aclaracion_dialogo);
+                    nuevo_pedido.setCantidad(cantidad_dialogo);
+                    nuevo_pedido.setPrecio(h.getPrecio()*cantidad_dialogo);
 
                     intent.putExtra("pedido",nuevo_pedido);
-//                    intent.putExtra("RESULTADO",0);
+                    intent.putExtra("RESULTADO",0);
                     setResult(RESULT_OK,intent);
+
                     finish();
             }
         });
@@ -71,22 +84,30 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
 
         findViewById(R.id.bt_cantidad).setOnClickListener(this);
         findViewById(R.id.bt_aclaracion).setOnClickListener(this);
+        findViewById(R.id.bt_hacer_pedido).setOnClickListener(this);
 
 
-//        usarToolbar();
+        itemDetallado = Lista_Menu.getItem(intent.getIntExtra(EXTRA_PARAM_ID, 0));
 
-        // Obtener el coche con el identificador establecido en la actividad principal
-        itemDetallado = Hamburguesas.getItem(intent.getIntExtra(EXTRA_PARAM_ID, 0));
 
         imagenExtendida = (ImageView) findViewById(R.id.imagen_extendida);
+
         detalles.setText(itemDetallado.getDetalle());
         nombre.setText(itemDetallado.getNombre());
+
+
+
         cargarImagenExtendida();
     }
 
     private void cargarImagenExtendida() {
+
+
         Glide.with(imagenExtendida.getContext())
-                .load(itemDetallado.getIdDrawable())
+                .using(new FirebaseImageLoader())
+                .load(itemDetallado.getStorageReferenceHamburguesa())
+                .fitCenter()
+                .centerCrop()
                 .into(imagenExtendida);
     }
 
@@ -105,22 +126,61 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.bt_aclaracion: createLoginDialogoAclaracion();
                 break;
+            case R.id.bt_hacer_pedido: Toast.makeText(v.getContext(),"Su pedido fue realizado",Toast.LENGTH_LONG).show();
+
+                Hamburguesas h = new Hamburguesas();
+                UnPedido nuevo_pedido = new UnPedido();
+
+                String aux1 = (itemDetallado.getNombre());
+                String aux2 = (itemDetallado.getDetalle());
+                String aux4 = (itemDetallado.getRefImagen());
+                int aux5 = (itemDetallado.getPrecio());
+//                    StorageReference strf = itemDetallado.getStorageReferenceHamburguesa();
+
+
+                h.setDetalle(aux2);
+                h.setNombre(aux1);
+                h.setRefImagen(aux4);
+                h.setPrecio(aux5);
+//                    h.setStorageReferenceHamburguesa(strf);
+
+                nuevo_pedido.setHamburguesa(h);
+                nuevo_pedido.setAclaracion(aclaracion_dialogo);
+                nuevo_pedido.setCantidad(cantidad_dialogo);
+                nuevo_pedido.setPrecio(h.getPrecio()*cantidad_dialogo);
+
+                intent.putExtra("pedido",nuevo_pedido);
+                intent.putExtra("RESULTADO",2);
+                setResult(RESULT_OK,intent);
+
+                finish();
+            break;
         }
 
     }
     public void createLoginDialogo() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
 
         View v = inflater.inflate(R.layout.dialog_cantidad, null);
 
 
-        Integer[] arreglo = new Integer[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-        ListView lista = v.findViewById(R.id.sv_cantidad);
+        final Integer[] arreglo = new Integer[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+        final ListView lista = v.findViewById(R.id.sv_cantidad);
         ArrayAdapter adapterList = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,arreglo);
         lista.setAdapter(adapterList);
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                cantidad_dialogo = arreglo[position];
+                Toast.makeText(view.getContext(),"cantidad " + cantidad_dialogo,Toast.LENGTH_LONG).show();
+                //aca termine, seguir con pasar los pedidos y q se acepte el pedido, usar el "Resultado" : 0  ó 1 para identificar el "RESULT_OK"
+            }
+        });
+
 
         builder.setView(v);
 
@@ -136,6 +196,10 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
 
         View v = inflater.inflate(R.layout.dialog_aclaracion, null);
 
+        EditText aclaracion = v.findViewById(R.id.ed_aclaracion_dialog);
+
+
+        aclaracion_dialogo = aclaracion.getText().toString();
 
         builder.setView(v);
 

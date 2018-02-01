@@ -8,8 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.lucia.santaburguersf.Fragment.UnPedido;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -53,17 +58,27 @@ public class AdaptadorPedido extends BaseAdapter {
         }
 
         ImageView imagen = (ImageView) convertView.findViewById(R.id.im_un_pedido);
-        TextView nombre = (TextView) convertView.findViewById(R.id.tv_nombre_pedido);
-        TextView cantidad = convertView.findViewById(R.id.tv_aclaracion_pedido);
+        TextView titulo = (TextView) convertView.findViewById(R.id.tv_Detalle_pedido);
+        TextView precio = convertView.findViewById(R.id.tv_precio_pedido);
 
         UnPedido pedido = (UnPedido) getItem(position);
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+//
+        StorageReference storageRef = storage.getReference().child(pedido.getHamburguesa().getRefImagen());
+//
+        Glide.with(imagen.getContext())
+                .using(new FirebaseImageLoader())
+                .load(storageRef)
+                .fitCenter()
+                .centerCrop()
+                .into(imagen);
+//
+        titulo.setText(String.valueOf(pedido.getCantidad()) +" " + pedido.getHamburguesa().getNombre());
 
-        Drawable drawable  = imagen.getResources().getDrawable(pedido.getHamburguesa().getIdDrawable());
-        imagen.setImageDrawable(drawable);
+        precio.setText("Precio: "+String.valueOf(pedido.getPrecio()));
 
-        nombre.setText(pedido.getHamburguesa().getNombre());
-        cantidad.setText(pedido.getHamburguesa().getDetalle());
+
         return convertView;
 
     }

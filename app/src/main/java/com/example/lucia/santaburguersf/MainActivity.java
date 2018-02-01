@@ -8,11 +8,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+
 import com.example.lucia.santaburguersf.Fragment.Inicio;
 import com.example.lucia.santaburguersf.Fragment.Lista_Menu;
 import com.example.lucia.santaburguersf.Fragment.Mi_Cuenta;
 
 public class MainActivity extends FragmentActivity {
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -44,6 +46,8 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        
 
         BottomNavigationView navigation =  findViewById(R.id.navigation);
 

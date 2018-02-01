@@ -98,6 +98,5 @@
         android:clickable="true"
         app:srcCompat="@drawable/ic_action_mas" />
 
-    />
 
 </RelativeLayout>

@@ -13,13 +13,13 @@ import java.io.Serializable;
 public class UnPedido implements Serializable{
 
     private Hamburguesas hamburguesa = null;
-    private String cantidad = null;
+    private int cantidad;
     private String aclaracion = null;
-    private double precio = 0;
+    private int precio = 0;
 
     public UnPedido(){}
 
-    public UnPedido(Hamburguesas hamb, String cant,String acla,double p) {
+    public UnPedido(Hamburguesas hamb, int cant,String acla,int p) {
 
         this.hamburguesa = hamb;
         this.cantidad = cant;
@@ -28,11 +28,11 @@ public class UnPedido implements Serializable{
 
     }
 
-    public double getPrecio() {
+    public int getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(int precio) {
         this.precio = precio;
     }
 
@@ -44,11 +44,11 @@ public class UnPedido implements Serializable{
         this.hamburguesa = hamburguesa;
     }
 
-    public String getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 

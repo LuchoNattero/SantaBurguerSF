@@ -15,23 +15,25 @@
         android:layout_marginLeft="5dp"
         />
     <TextView
-        android:id="@+id/tv_nombre_pedido"
-        android:layout_width="200dp"
+        android:id="@+id/tv_Detalle_pedido"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/im_un_pedido"
         android:layout_toEndOf="@+id/im_un_pedido"
         android:layout_marginLeft="5dp"
         android:text="Nombre"
+        android:textColor="@color/negro"
+        android:textSize="16dp"
         />
 
     <TextView
-        android:id="@+id/tv_aclaracion_pedido"
-        android:layout_width="200dp"
+        android:id="@+id/tv_precio_pedido"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/im_un_pedido"
-        android:layout_below="@+id/tv_nombre_pedido"
+        android:layout_below="@+id/tv_Detalle_pedido"
         android:layout_marginLeft="5dp"
-        android:text="Cantidad"
+        android:text="Precio"
         />
 
 </RelativeLayout>

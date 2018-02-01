@@ -1,41 +1,28 @@
 package com.example.lucia.santaburguersf.Fragment;
 
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.util.Pair;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatCallback;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.lucia.santaburguersf.AdaptadorHamburguesas;
+import com.example.lucia.santaburguersf.FireBase.Reference;
 import com.example.lucia.santaburguersf.Hamburguesas;
 import com.example.lucia.santaburguersf.Pedido;
 import com.example.lucia.santaburguersf.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +34,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class Lista_Menu extends Fragment{
 
+    private static List<Hamburguesas> lista_hamburguesa;
     private GridView gridView;
     private AdaptadorHamburguesas adaptador;
     private View MiInflater;
@@ -54,7 +42,6 @@ public class Lista_Menu extends Fragment{
 
 
     public Lista_Menu() {
-        // Required empty public constructor
     }
 
 //MODIFICAR SEGUN LA PAGINA DE INTERNET ENCONTRADA DE EJEMPLO.....http://www.hermosaprogramacion.com/2015/07/tutorial-para-crear-un-gridview-en-android/
@@ -65,6 +52,8 @@ public class Lista_Menu extends Fragment{
         MiInflater = inflater.inflate(R.layout.fragment_lista__menu, container, false);
 //
         FloatingActionButton fab =  MiInflater.findViewById(R.id.fab_button_pedidos);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,12 +64,38 @@ public class Lista_Menu extends Fragment{
             }
         });
 
+        lista_hamburguesa = new ArrayList<>();
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
         gridView = (GridView) MiInflater.findViewById(R.id.grid);
-        adaptador = new AdaptadorHamburguesas(this.getContext());
+
+
+        adaptador = new AdaptadorHamburguesas(this.getContext(),lista_hamburguesa);
+
         gridView.setAdapter(adaptador);
+
+        database.getReference(Reference.HAMBURGUESA_REFERENCE).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                lista_hamburguesa.removeAll(lista_hamburguesa);
+
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+
+                    Hamburguesas hamburguesa = snapshot.getValue(Hamburguesas.class);
+
+                    lista_hamburguesa.add(hamburguesa);
+                }
+                adaptador.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         registerForContextMenu(gridView);
 
         gridView.setClickable(true);
@@ -88,7 +103,10 @@ public class Lista_Menu extends Fragment{
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Hamburguesas item = (Hamburguesas) parent.getItemAtPosition(position);
+
+//                Toast.makeText(view.getContext(),item.getRefImagen(),Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), ActividadDetalle.class);
                 intent.putExtra(ActividadDetalle.EXTRA_PARAM_ID, item.getId());
@@ -97,17 +115,7 @@ public class Lista_Menu extends Fragment{
         });
         return MiInflater;
     }
-//
-//    private void usarToolbar(View v) {
-//        Toolbar toolbar = (Toolbar) v.findViewById(R.id.tb_inicio);
-//        setSupportActionBar(toolbar);
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -120,10 +128,7 @@ public class Lista_Menu extends Fragment{
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Comprobamos si el resultado de la segunda actividad es "RESULT_CANCELED".
@@ -137,16 +142,8 @@ public class Lista_Menu extends Fragment{
                 // Si es así mostramos mensaje de cancelado por pantalla.
                 case RESULT_OK:
 
-//
-//                    String aux1 = (data.getExtras().getString("nombre"));
-//                    String aux2 = (data.getExtras().getString("detalle"));
-//                    int aux3 = (data.getExtras().getInt("drawable"));
-
                     UnPedido ham = (UnPedido) data.getSerializableExtra("pedido");
 
-//                    ham.setNombre(aux1);
-//                    ham.setDetalle(aux2);
-//                    ham.setIdDrawable(aux3);
                     listaPedidos.add(ham);
 
 
@@ -154,6 +151,28 @@ public class Lista_Menu extends Fragment{
                     break;
             }
         }
+
+        if(requestCode == 2){
+
+            switch (resultCode) {
+
+                case RESULT_CANCELED:
+                    Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    break;
+
+                case RESULT_OK:
+
+            }
+        }
+
     }
 
+    public static Hamburguesas getItem(int id) {
+        for (Hamburguesas item : lista_hamburguesa) {
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

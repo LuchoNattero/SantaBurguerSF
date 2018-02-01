@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ public class Pedido extends AppCompatActivity {
     private Intent intent;
     private AdaptadorPedido adpPedido ;
     private ListView listaElementos;
+    private ArrayList<UnPedido> lista;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -30,7 +33,13 @@ public class Pedido extends AppCompatActivity {
 
         intent = getIntent();
 
-        ArrayList<UnPedido> lista  = (ArrayList<UnPedido>) intent.getSerializableExtra("listaPedidos");
+        lista  = (ArrayList<UnPedido>) intent.getSerializableExtra("listaPedidos");
+
+        Button boton_realizar_pedido = findViewById(R.id.bt_hacer_pedido);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.tb_pedido);
+        setSupportActionBar(myToolbar);
+
 
         listaElementos = findViewById(R.id.lv_pedido);
         adpPedido = new AdaptadorPedido(getBaseContext(),lista);
@@ -48,11 +57,22 @@ public class Pedido extends AppCompatActivity {
             }
         });
 
-
+//        boton_realizar_pedido.setText("REALIZAR PEDIDO TOTAL: " );
 
     }
 
+    int totalAPagar(){
 
+        int total = 0;
+
+        for (UnPedido item : lista) {
+
+            total += item.getPrecio();
+
+        }
+
+        return total;
+    }
     public void createLoginDialogoEditar() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

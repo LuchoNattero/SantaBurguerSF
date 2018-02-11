@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado: "
+            android:id="@+id/tv_estado"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_precio_realizado"
+            android:text="Monto Total"
+            android:layout_below="@+id/tv_estado"
+            android:layout_marginLeft="10dp"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_lista_pedidos"
+            android:text="Pedidos"
+            android:layout_below="@+id/tv_precio_realizado"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:text="pedidos"
+            android:id="@+id/lv_pedido_realizado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_lista_pedidos"
+            android:layout_marginLeft="10dp"
+            />
+
+    </RelativeLayout>
+
+</FrameLayout>

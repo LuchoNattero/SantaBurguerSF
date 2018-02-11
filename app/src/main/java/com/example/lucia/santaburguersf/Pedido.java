@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,12 +19,14 @@ import com.example.lucia.santaburguersf.Fragment.UnPedido;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pedido extends AppCompatActivity {
+public class Pedido extends AppCompatActivity implements View.OnClickListener{
 
     private Intent intent;
     private AdaptadorPedido adpPedido ;
     private ListView listaElementos;
     private ArrayList<UnPedido> lista;
+    private EditText telefono;
+    private EditText direccion;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -35,7 +38,10 @@ public class Pedido extends AppCompatActivity {
 
         lista  = (ArrayList<UnPedido>) intent.getSerializableExtra("listaPedidos");
 
-        Button boton_realizar_pedido = findViewById(R.id.bt_hacer_pedido);
+        findViewById(R.id.bt_Confirmar).setOnClickListener(this);
+
+        telefono = findViewById(R.id.ed_telefono);
+        direccion = findViewById(R.id.ed_direccion);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.tb_pedido);
         setSupportActionBar(myToolbar);
@@ -60,7 +66,10 @@ public class Pedido extends AppCompatActivity {
 //        boton_realizar_pedido.setText("REALIZAR PEDIDO TOTAL: " );
 
     }
+//    @Override
+//    public void onClick(View view){
 
+//    }
     int totalAPagar(){
 
         int total = 0;
@@ -86,5 +95,42 @@ public class Pedido extends AppCompatActivity {
 
 
         builder.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+
+
+        switch (v.getId()){
+
+            case R.id.bt_Confirmar:
+
+                boolean error = false;
+
+                Toast.makeText(getApplicationContext(),"Realizo el pedido",Toast.LENGTH_LONG).show();
+
+                if(telefono.getText().toString().isEmpty())
+                {
+                    telefono.setError("Debe completar el campo");
+                    error = true;
+                }
+                if(direccion.getText().toString().isEmpty())
+                {
+                    direccion.setError("Debe completar el campo");
+                    error = true;
+                }
+
+                if(!error)
+                {
+                    intent.putExtra("telefono",telefono.getText().toString());
+                    intent.putExtra("direccion",direccion.getText().toString());
+                    setResult(RESULT_OK,intent);
+
+                    finish();
+                }
+                break;
+        }
+
+
     }
 }

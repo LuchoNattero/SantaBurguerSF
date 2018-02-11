@@ -9,7 +9,18 @@
     tools:context="com.example.lucia.santaburguersf.MainActivity"
     android:background="@drawable/fondo_degradacion">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:background="@color/color_mostaza"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
+        />
     <FrameLayout
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@android:dimen/notification_large_icon_height"

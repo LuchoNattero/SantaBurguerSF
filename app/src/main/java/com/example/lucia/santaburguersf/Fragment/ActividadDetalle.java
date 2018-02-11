@@ -42,7 +42,8 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle);
         intent = getIntent();
-
+        Toolbar toolbar =  findViewById(R.id.tb_detalle);
+        setSupportActionBar(toolbar);
 
         FloatingActionButton fab =  findViewById(R.id.fab_button);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -50,29 +51,27 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
             public void onClick(View view) {
 //                Snackbar.make(view, "Se presionó el FAB", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                    Hamburguesas h = new Hamburguesas();
+                    String h;
                     UnPedido nuevo_pedido = new UnPedido();
 
-                    String aux1 = (itemDetallado.getNombre());
-                    String aux2 = (itemDetallado.getDetalle());
-                    String aux4 = (itemDetallado.getRefImagen());
-                    int aux5 = (itemDetallado.getPrecio());
-//                    StorageReference strf = itemDetallado.getStorageReferenceHamburguesa();
+//                    String aux1 = (itemDetallado.getNombre());
+//                    String aux2 = (itemDetallado.getDetalle());
+//                    String aux4 = (itemDetallado.getRefImagen());
+//                    int aux5 = (itemDetallado.getPrecio());
+//
+//                    h.setDetalle(aux2);
+//                    h.setNombre(aux1);
+//                    h.setRefImagen(aux4);
+//                    h.setPrecio(aux5);
 
-
-                    h.setDetalle(aux2);
-                    h.setNombre(aux1);
-                    h.setRefImagen(aux4);
-                    h.setPrecio(aux5);
-//                    h.setStorageReferenceHamburguesa(strf);
-
-                    nuevo_pedido.setHamburguesa(h);
+                    nuevo_pedido.setHamburguesa(itemDetallado.getNombre());
                     nuevo_pedido.setAclaracion(aclaracion_dialogo);
                     nuevo_pedido.setCantidad(cantidad_dialogo);
-                    nuevo_pedido.setPrecio(h.getPrecio()*cantidad_dialogo);
+                    nuevo_pedido.setPrecio(itemDetallado.getPrecio()*cantidad_dialogo);
+                    nuevo_pedido.setRefImagen(itemDetallado.getRefImagen());
 
                     intent.putExtra("pedido",nuevo_pedido);
-                    intent.putExtra("RESULTADO",0);
+                    intent.putExtra("RESULTADO",1);
                     setResult(RESULT_OK,intent);
 
                     finish();
@@ -90,7 +89,7 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
         itemDetallado = Lista_Menu.getItem(intent.getIntExtra(EXTRA_PARAM_ID, 0));
 
 
-        imagenExtendida = (ImageView) findViewById(R.id.imagen_extendida);
+        imagenExtendida =  findViewById(R.id.imagen_extendida);
 
         detalles.setText(itemDetallado.getDetalle());
         nombre.setText(itemDetallado.getNombre());
@@ -111,11 +110,6 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
                 .into(imagenExtendida);
     }
 
-    private void usarToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -128,26 +122,27 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.bt_hacer_pedido: Toast.makeText(v.getContext(),"Su pedido fue realizado",Toast.LENGTH_LONG).show();
 
-                Hamburguesas h = new Hamburguesas();
+//                Hamburguesas h = new Hamburguesas();
+                String h;
                 UnPedido nuevo_pedido = new UnPedido();
 
-                String aux1 = (itemDetallado.getNombre());
-                String aux2 = (itemDetallado.getDetalle());
-                String aux4 = (itemDetallado.getRefImagen());
-                int aux5 = (itemDetallado.getPrecio());
-//                    StorageReference strf = itemDetallado.getStorageReferenceHamburguesa();
+//                String aux1 = (itemDetallado.getNombre());
+//                String aux2 = (itemDetallado.getDetalle());
+//                String aux4 = (itemDetallado.getRefImagen());
+//                int aux5 = (itemDetallado.getPrecio());
+//
+//
+//                h.setDetalle(aux2);
+//                h.setNombre(aux1);
+//                h.setRefImagen(aux4);
+//                h.setPrecio(aux5);
 
-
-                h.setDetalle(aux2);
-                h.setNombre(aux1);
-                h.setRefImagen(aux4);
-                h.setPrecio(aux5);
-//                    h.setStorageReferenceHamburguesa(strf);
-
+                h = itemDetallado.getNombre();
                 nuevo_pedido.setHamburguesa(h);
                 nuevo_pedido.setAclaracion(aclaracion_dialogo);
                 nuevo_pedido.setCantidad(cantidad_dialogo);
-                nuevo_pedido.setPrecio(h.getPrecio()*cantidad_dialogo);
+                nuevo_pedido.setPrecio(itemDetallado.getPrecio()*cantidad_dialogo);
+                nuevo_pedido.setRefImagen(itemDetallado.getRefImagen());
 
                 intent.putExtra("pedido",nuevo_pedido);
                 intent.putExtra("RESULTADO",2);

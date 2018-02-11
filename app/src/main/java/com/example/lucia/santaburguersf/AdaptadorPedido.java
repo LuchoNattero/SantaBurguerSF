@@ -65,7 +65,7 @@ public class AdaptadorPedido extends BaseAdapter {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
 //
-        StorageReference storageRef = storage.getReference().child(pedido.getHamburguesa().getRefImagen());
+        StorageReference storageRef = storage.getReference().child(pedido.getRefImagen());
 //
         Glide.with(imagen.getContext())
                 .using(new FirebaseImageLoader())
@@ -74,7 +74,7 @@ public class AdaptadorPedido extends BaseAdapter {
                 .centerCrop()
                 .into(imagen);
 //
-        titulo.setText(String.valueOf(pedido.getCantidad()) +" " + pedido.getHamburguesa().getNombre());
+        titulo.setText(String.valueOf(pedido.getCantidad()) +" " + pedido.getHamburguesa());
 
         precio.setText("Precio: "+String.valueOf(pedido.getPrecio()));
 

@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 
@@ -13,9 +14,9 @@ import com.example.lucia.santaburguersf.Fragment.Inicio;
 import com.example.lucia.santaburguersf.Fragment.Lista_Menu;
 import com.example.lucia.santaburguersf.Fragment.Mi_Cuenta;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
-
+    public static Mi_Cuenta mi_cuenta;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,9 +48,13 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
+        mi_cuenta = new Mi_Cuenta();
 
         BottomNavigationView navigation =  findViewById(R.id.navigation);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.tb_main_activity);
+        setSupportActionBar(myToolbar);
+
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Lista_Menu lm = new Lista_Menu();

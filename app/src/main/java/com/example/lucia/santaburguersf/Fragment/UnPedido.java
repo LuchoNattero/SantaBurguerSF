@@ -12,20 +12,31 @@ import java.io.Serializable;
 
 public class UnPedido implements Serializable{
 
-    private Hamburguesas hamburguesa = null;
+    private String hamburguesa = null;
     private int cantidad;
     private String aclaracion = null;
     private int precio = 0;
+    private String refImagen;
 
     public UnPedido(){}
 
-    public UnPedido(Hamburguesas hamb, int cant,String acla,int p) {
+    public UnPedido(String hamb, int cant,String acla,int p) {
 
         this.hamburguesa = hamb;
         this.cantidad = cant;
         this.aclaracion = acla;
         this.precio = p;
 
+    }
+
+    @Override
+    public String toString() {
+        return "UnPedido{" +
+                "hamburguesa=" + hamburguesa +
+                ", cantidad=" + cantidad +
+                ", aclaracion='" + aclaracion + '\'' +
+                ", precio=" + precio +
+                '}';
     }
 
     public int getPrecio() {
@@ -36,11 +47,19 @@ public class UnPedido implements Serializable{
         this.precio = precio;
     }
 
-    public Hamburguesas getHamburguesa() {
+    public String getHamburguesa() {
         return hamburguesa;
     }
 
-    public void setHamburguesa(Hamburguesas hamburguesa) {
+    public String getRefImagen() {
+        return refImagen;
+    }
+
+    public void setRefImagen(String refImagen) {
+        this.refImagen = refImagen;
+    }
+
+    public void setHamburguesa(String hamburguesa) {
         this.hamburguesa = hamburguesa;
     }
 

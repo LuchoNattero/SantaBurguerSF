@@ -8,18 +8,20 @@
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/tb_detalle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_fab"
         android:background="@color/color_mostaza"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:elevation="4dp"
+        />
 
         <FrameLayout
             android:id="@+id/fl_imagen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar"
+            android:layout_below="@+id/tb_detalle"
             android:layout_above="@+id/tv_nombre"
             android:layout_marginBottom="4dp">
 

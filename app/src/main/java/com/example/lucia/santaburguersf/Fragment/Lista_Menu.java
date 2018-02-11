@@ -6,39 +6,50 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.lucia.santaburguersf.AdaptadorHamburguesas;
 import com.example.lucia.santaburguersf.FireBase.Reference;
 import com.example.lucia.santaburguersf.Hamburguesas;
+import com.example.lucia.santaburguersf.HistorialPedido;
 import com.example.lucia.santaburguersf.Pedido;
 import com.example.lucia.santaburguersf.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.example.lucia.santaburguersf.MainActivity.mi_cuenta;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Lista_Menu extends Fragment{
+public class Lista_Menu extends Fragment {
 
     private static List<Hamburguesas> lista_hamburguesa;
     private GridView gridView;
     private AdaptadorHamburguesas adaptador;
     private View MiInflater;
     private ArrayList<UnPedido> listaPedidos = new ArrayList();
+    private ArrayList<HistorialPedido> lista_historial = new ArrayList();
+    private FirebaseDatabase database;
 
 
     public Lista_Menu() {
@@ -50,7 +61,7 @@ public class Lista_Menu extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         MiInflater = inflater.inflate(R.layout.fragment_lista__menu, container, false);
-//
+
         FloatingActionButton fab =  MiInflater.findViewById(R.id.fab_button_pedidos);
 
 
@@ -66,7 +77,7 @@ public class Lista_Menu extends Fragment{
 
         lista_hamburguesa = new ArrayList<>();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
 
 
         gridView = (GridView) MiInflater.findViewById(R.id.grid);
@@ -95,6 +106,8 @@ public class Lista_Menu extends Fragment{
 
             }
         });
+
+
 
         registerForContextMenu(gridView);
 
@@ -135,24 +148,53 @@ public class Lista_Menu extends Fragment{
 
 
         if(requestCode == 0){
-            switch (resultCode) {
-                case RESULT_CANCELED:
-                    Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    break;
-                // Si es así mostramos mensaje de cancelado por pantalla.
-                case RESULT_OK:
 
-                    UnPedido ham = (UnPedido) data.getSerializableExtra("pedido");
+            switch ((int)data.getSerializableExtra("RESULTADO")) {
 
-                    listaPedidos.add(ham);
+                case 1:
+                switch (resultCode) {
+                    case RESULT_CANCELED:
+                        Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        break;
+                    // Si es así mostramos mensaje de cancelado por pantalla.
+                    case RESULT_OK:
+
+                        UnPedido ham = (UnPedido) data.getSerializableExtra("pedido");
+
+                        listaPedidos.add(ham);
 
 
-                    Snackbar.make(MiInflater, "Se agrego a pedido", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(MiInflater, "Se agrego a pedido", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        break;
+                }
+                break;
+                case 2:
+
+                    //ACA SE TIENE QUE IR A LA CLASE PEDIDO YA QUE RELIZO CONFIRMO EL PEDIDO
+                    switch (resultCode) {
+                        case RESULT_CANCELED:
+                            Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                            break;
+                        // Si es así mostramos mensaje de cancelado por pantalla.
+                        case RESULT_OK:
+
+                            UnPedido ham = (UnPedido) data.getSerializableExtra("pedido");
+
+                            listaPedidos.add(ham);
+
+                            Snackbar.make(MiInflater, "IR A PEDIDO", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                            Intent intent = new Intent(getContext(), Pedido.class);
+                            intent.putExtra("listaPedidos", listaPedidos);
+                            startActivityForResult(intent,1);
+
+                            break;
+                    }
                     break;
             }
         }
 
-        if(requestCode == 2){
+        if(requestCode == 1){
 
             switch (resultCode) {
 
@@ -161,7 +203,41 @@ public class Lista_Menu extends Fragment{
                     break;
 
                 case RESULT_OK:
+                    Snackbar.make(MiInflater, "Se realizo el pedido final", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
+//                    HistorialPedido historialPedido = new HistorialPedido(listaPedidos,0,"pendiente");
+
+                    DatabaseReference pedidoUsuarioRef = database.getReference(Reference.USUARIO_REFERENCE+"/"+Reference.RODRIGO_REFERENCE+"/pedidos");
+
+                    HistorialPedido historialPedido = new HistorialPedido();
+
+                    historialPedido.setDireccion(data.getStringExtra("direccion"));
+                    historialPedido.setTelefono(data.getStringExtra("telefono"));
+                    historialPedido.setEstado("Pendiente");
+                    historialPedido.setLista_pedido(listaPedidos);
+                    historialPedido.setPrecio(totalAPagar());
+
+
+                    Map<String, Object> childUpdate = new HashMap<>();
+
+                    childUpdate.put(historialPedido.getId(),historialPedido);
+                    pedidoUsuarioRef.updateChildren(childUpdate);
+
+                    DatabaseReference pedidoRef = database.getReference(Reference.PEDIDOS_REFERENCE);
+
+
+//                    pedidoRef.child(historialPedido.getId());
+                    Map<String, Object> pedidoUpdate = new HashMap<>();
+
+                    pedidoUpdate.put("Rodrigo",historialPedido);
+                    pedidoRef.child(historialPedido.getId()+"/").updateChildren(pedidoUpdate);
+
+
+                    listaPedidos.removeAll(listaPedidos);
+
+
+
+                     break;
             }
         }
 
@@ -174,5 +250,18 @@ public class Lista_Menu extends Fragment{
             }
         }
         return null;
+    }
+
+    int totalAPagar(){
+
+        int total = 0;
+
+        for (UnPedido item : listaPedidos) {
+
+            total += item.getPrecio();
+
+        }
+
+        return total;
     }
 }

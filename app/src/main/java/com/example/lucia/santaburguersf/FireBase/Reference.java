@@ -11,4 +11,5 @@ public class Reference {
     final static public String PEDIDOS_REFERENCE = "Pedidos";
     final static public String RODRIGO_REFERENCE = "Rodrigo";
     final static public String LUCIANO_REFERENCE = "Luciano";
+    final static public String PROMOCION_REFERENCE = "Promocion";
 }

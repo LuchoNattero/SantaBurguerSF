@@ -63,13 +63,9 @@ public class Pedido extends AppCompatActivity implements View.OnClickListener{
             }
         });
 
-//        boton_realizar_pedido.setText("REALIZAR PEDIDO TOTAL: " );
 
     }
-//    @Override
-//    public void onClick(View view){
 
-//    }
     int totalAPagar(){
 
         int total = 0;

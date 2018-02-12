@@ -49,20 +49,8 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Se presionó el FAB", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                     String h;
                     UnPedido nuevo_pedido = new UnPedido();
-
-//                    String aux1 = (itemDetallado.getNombre());
-//                    String aux2 = (itemDetallado.getDetalle());
-//                    String aux4 = (itemDetallado.getRefImagen());
-//                    int aux5 = (itemDetallado.getPrecio());
-//
-//                    h.setDetalle(aux2);
-//                    h.setNombre(aux1);
-//                    h.setRefImagen(aux4);
-//                    h.setPrecio(aux5);
 
                     nuevo_pedido.setHamburguesa(itemDetallado.getNombre());
                     nuevo_pedido.setAclaracion(aclaracion_dialogo);
@@ -122,20 +110,9 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.bt_hacer_pedido: Toast.makeText(v.getContext(),"Su pedido fue realizado",Toast.LENGTH_LONG).show();
 
-//                Hamburguesas h = new Hamburguesas();
+
                 String h;
                 UnPedido nuevo_pedido = new UnPedido();
-
-//                String aux1 = (itemDetallado.getNombre());
-//                String aux2 = (itemDetallado.getDetalle());
-//                String aux4 = (itemDetallado.getRefImagen());
-//                int aux5 = (itemDetallado.getPrecio());
-//
-//
-//                h.setDetalle(aux2);
-//                h.setNombre(aux1);
-//                h.setRefImagen(aux4);
-//                h.setPrecio(aux5);
 
                 h = itemDetallado.getNombre();
                 nuevo_pedido.setHamburguesa(h);
@@ -172,7 +149,6 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
 
                 cantidad_dialogo = arreglo[position];
                 Toast.makeText(view.getContext(),"cantidad " + cantidad_dialogo,Toast.LENGTH_LONG).show();
-                //aca termine, seguir con pasar los pedidos y q se acepte el pedido, usar el "Resultado" : 0  ó 1 para identificar el "RESULT_OK"
             }
         });
 

@@ -55,7 +55,6 @@ public class Lista_Menu extends Fragment {
     public Lista_Menu() {
     }
 
-//MODIFICAR SEGUN LA PAGINA DE INTERNET ENCONTRADA DE EJEMPLO.....http://www.hermosaprogramacion.com/2015/07/tutorial-para-crear-un-gridview-en-android/
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -149,63 +148,49 @@ public class Lista_Menu extends Fragment {
 
         if(requestCode == 0){
 
-            switch ((int)data.getSerializableExtra("RESULTADO")) {
-
-                case 1:
-                switch (resultCode) {
-                    case RESULT_CANCELED:
-                        Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                        break;
-                    // Si es así mostramos mensaje de cancelado por pantalla.
-                    case RESULT_OK:
-
-                        UnPedido ham = (UnPedido) data.getSerializableExtra("pedido");
-
-                        listaPedidos.add(ham);
+            if (resultCode == RESULT_OK){
 
 
-                        Snackbar.make(MiInflater, "Se agrego a pedido", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                        break;
+                switch ((int)data.getSerializableExtra("RESULTADO")) {
+                    case 1:
+
+                                UnPedido ham = (UnPedido) data.getSerializableExtra("pedido");
+
+                                listaPedidos.add(ham);
+
+
+                                Snackbar.make(MiInflater, "Se agrego a pedido", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                                break;
+
+                    case 2:
+
+                                UnPedido ham_2 = (UnPedido) data.getSerializableExtra("pedido");
+
+                                listaPedidos.add(ham_2);
+
+                                Snackbar.make(MiInflater, "IR A PEDIDO", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                                Intent intent = new Intent(getContext(), Pedido.class);
+                                intent.putExtra("listaPedidos", listaPedidos);
+                                startActivityForResult(intent,1);
+
+                                break;
                 }
-                break;
-                case 2:
 
-                    //ACA SE TIENE QUE IR A LA CLASE PEDIDO YA QUE RELIZO CONFIRMO EL PEDIDO
-                    switch (resultCode) {
-                        case RESULT_CANCELED:
-                            Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                            break;
-                        // Si es así mostramos mensaje de cancelado por pantalla.
-                        case RESULT_OK:
+            }else if(resultCode == RESULT_CANCELED){
 
-                            UnPedido ham = (UnPedido) data.getSerializableExtra("pedido");
+                Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-                            listaPedidos.add(ham);
-
-                            Snackbar.make(MiInflater, "IR A PEDIDO", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                            Intent intent = new Intent(getContext(), Pedido.class);
-                            intent.putExtra("listaPedidos", listaPedidos);
-                            startActivityForResult(intent,1);
-
-                            break;
-                    }
-                    break;
             }
+
         }
 
         if(requestCode == 1){
 
-            switch (resultCode) {
+            if (resultCode == RESULT_OK){
 
-                case RESULT_CANCELED:
-                    Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    break;
-
-                case RESULT_OK:
                     Snackbar.make(MiInflater, "Se realizo el pedido final", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-//                    HistorialPedido historialPedido = new HistorialPedido(listaPedidos,0,"pendiente");
 
                     DatabaseReference pedidoUsuarioRef = database.getReference(Reference.USUARIO_REFERENCE+"/"+Reference.RODRIGO_REFERENCE+"/pedidos");
 
@@ -220,24 +205,26 @@ public class Lista_Menu extends Fragment {
 
                     Map<String, Object> childUpdate = new HashMap<>();
 
-                    childUpdate.put(historialPedido.getId(),historialPedido);
+                    String id_pedido = historialPedido.getId();
+
+                    childUpdate.put(id_pedido,historialPedido);
                     pedidoUsuarioRef.updateChildren(childUpdate);
 
                     DatabaseReference pedidoRef = database.getReference(Reference.PEDIDOS_REFERENCE);
 
 
-//                    pedidoRef.child(historialPedido.getId());
                     Map<String, Object> pedidoUpdate = new HashMap<>();
 
                     pedidoUpdate.put("Rodrigo",historialPedido);
-                    pedidoRef.child(historialPedido.getId()+"/").updateChildren(pedidoUpdate);
+                    pedidoRef.child(id_pedido+"/").updateChildren(pedidoUpdate);
 
 
                     listaPedidos.removeAll(listaPedidos);
 
+            }else if(resultCode == RESULT_CANCELED){
 
+                Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-                     break;
             }
         }
 

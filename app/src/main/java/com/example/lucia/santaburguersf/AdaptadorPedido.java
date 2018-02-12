@@ -64,16 +64,16 @@ public class AdaptadorPedido extends BaseAdapter {
         UnPedido pedido = (UnPedido) getItem(position);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-//
+
         StorageReference storageRef = storage.getReference().child(pedido.getRefImagen());
-//
+
         Glide.with(imagen.getContext())
                 .using(new FirebaseImageLoader())
                 .load(storageRef)
                 .fitCenter()
                 .centerCrop()
                 .into(imagen);
-//
+
         titulo.setText(String.valueOf(pedido.getCantidad()) +" " + pedido.getHamburguesa());
 
         precio.setText("Precio: "+String.valueOf(pedido.getPrecio()));

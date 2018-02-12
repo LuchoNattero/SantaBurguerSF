@@ -1,8 +1,6 @@
-package com.example.lucia.santaburguersf;
+package com.example.lucia.santaburguersf.Fragment;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,61 +10,56 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.lucia.santaburguersf.Fragment.Lista_Menu;
+import com.example.lucia.santaburguersf.Hamburguesas;
+import com.example.lucia.santaburguersf.R;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by lucia on 9/1/2018.
+ * Created by lucia on 11/2/2018.
  */
 
-public class AdaptadorHamburguesas extends BaseAdapter{
+public class AdaptadorPromocion extends BaseAdapter {
 
     private Context context;
-    private List<Hamburguesas> Lista_hamburguesas = new ArrayList<>();
+    private ArrayList<Hamburguesas> lista_promocion = new ArrayList<>();
 
-    public AdaptadorHamburguesas(Context context, List<Hamburguesas> lista_hamburguesas) {
+
+    public AdaptadorPromocion(Context context, ArrayList<Hamburguesas> lista_promocion) {
         this.context = context;
-        Lista_hamburguesas = lista_hamburguesas;
-    }
-
-
-
-    public AdaptadorHamburguesas(Context context) {
-        this.context = context;
+        this.lista_promocion = lista_promocion;
     }
 
     @Override
     public int getCount() {
-        return Lista_hamburguesas.size();
+        return lista_promocion.size();
     }
 
     @Override
     public Hamburguesas getItem(int position) {
-        return Lista_hamburguesas.get(position);
+        return lista_promocion.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return getItem(position).getId();
+        return 0;
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        if (view == null) {
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.grid_item, viewGroup, false);
+            convertView = inflater.inflate(R.layout.promocion, parent, false);
         }
-        final Hamburguesas item = getItem(position);
-        ImageView imagenHamburguesa = (ImageView) view.findViewById(R.id.imagen_hamburguesa);
-        TextView nombreHamburguesa = (TextView) view.findViewById(R.id.nombre_hamburguesa);
+        Hamburguesas item = getItem(position);
+
+        ImageView imagenHamburguesa = (ImageView) convertView.findViewById(R.id.im_promocion);
+        TextView nombreHamburguesa = (TextView) convertView.findViewById(R.id.nombre_promocion_hamburguesa);
 
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -75,7 +68,6 @@ public class AdaptadorHamburguesas extends BaseAdapter{
 
         item.setStorageReferenceHamburguesa(storageRef);
 
-//        Toast.makeText(view.getContext(),item.getRefImagen(),Toast.LENGTH_SHORT).show();
         Glide.with(imagenHamburguesa.getContext())
                 .using(new FirebaseImageLoader())
                 .load(storageRef)
@@ -85,6 +77,9 @@ public class AdaptadorHamburguesas extends BaseAdapter{
 
         nombreHamburguesa.setText(item.getNombre());
 
-        return view;
+
+
+
+        return convertView;
     }
 }

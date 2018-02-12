@@ -43,26 +43,18 @@ public class Mi_Cuenta extends Fragment {
     public Mi_Cuenta() {
         // Required empty public constructor
     }
-//
-//    public ArrayList<HistorialPedido> getLista_historialPedido() {
-//        return lista_historialPedido;
-//    }
-//
-//
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//         // Inflate the layout for this fragment
+         // Inflate the layout for this fragment
         MiInflater = inflater.inflate(R.layout.fragment_mi__cuenta, container, false);
-//
-////
-////        Snackbar.make(MiInflater, "paso el intent", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-//
-//
+
+
+//        Snackbar.make(MiInflater, "paso el intent", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         database = FirebaseDatabase.getInstance();
-//
-//
+
+
         DatabaseReference pedidoRef = database.getReference(Reference.USUARIO_REFERENCE+"/"+Reference.RODRIGO_REFERENCE+"/pedidos");
 
         pedidoRef.addValueEventListener(new ValueEventListener() {
@@ -86,9 +78,9 @@ public class Mi_Cuenta extends Fragment {
             }
         });
 
-//
+
         lista_pedidos = MiInflater.findViewById(R.id.lv_informacion);
-//
+
         adpPedido = new AdaptadorPedidoRealizado(getContext(),lista_historialPedido);
         lista_pedidos.setAdapter(adpPedido);
         registerForContextMenu(lista_pedidos);

@@ -4,7 +4,7 @@ import com.example.lucia.santaburguersf.Fragment.UnPedido;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
+
 
 /**
  * Created by lucia on 7/2/2018.
@@ -35,10 +35,6 @@ public class HistorialPedido implements Serializable {
         this.precio = precio;
         this.estado = estado;
     }
-/*
-    public HistorialPedido(ArrayList<UnPedido> lista_pedido) {
-        this.lista_pedido = lista_pedido;
-    }*/
 
     public ArrayList<UnPedido> getLista_pedido() {
         return lista_pedido;

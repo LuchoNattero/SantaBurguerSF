@@ -94,11 +94,6 @@ public class Hamburguesas implements Serializable {
 
     };
 
-//    public static Hamburguesas {
-//
-//
-//    }
-
     /**
      * Obtiene item basado en su identificador
      *

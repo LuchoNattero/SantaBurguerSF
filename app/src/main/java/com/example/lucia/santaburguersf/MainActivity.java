@@ -1,5 +1,6 @@
 package com.example.lucia.santaburguersf;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,7 +17,6 @@ import com.example.lucia.santaburguersf.Fragment.Mi_Cuenta;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static Mi_Cuenta mi_cuenta;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mi_cuenta = new Mi_Cuenta();
 
         BottomNavigationView navigation =  findViewById(R.id.navigation);
 

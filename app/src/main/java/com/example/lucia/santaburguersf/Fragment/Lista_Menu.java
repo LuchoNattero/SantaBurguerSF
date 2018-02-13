@@ -29,6 +29,7 @@ import com.example.lucia.santaburguersf.AdaptadorHamburguesas;
 import com.example.lucia.santaburguersf.FireBase.Reference;
 import com.example.lucia.santaburguersf.Hamburguesas;
 import com.example.lucia.santaburguersf.HistorialPedido;
+import com.example.lucia.santaburguersf.MainActivity;
 import com.example.lucia.santaburguersf.Pedido;
 import com.example.lucia.santaburguersf.R;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +46,6 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static com.example.lucia.santaburguersf.MainActivity.mi_cuenta;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -193,7 +193,7 @@ public class Lista_Menu extends Fragment {
                                 listaPedidos.add(ham);
 
 
-                                Snackbar.make(MiInflater, "Se agrego a pedido", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                                Snackbar.make(MiInflater.getRootView(), "Se agrego a pedido", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                                 break;
 
                     case 2:
@@ -201,8 +201,6 @@ public class Lista_Menu extends Fragment {
                                 UnPedido ham_2 = (UnPedido) data.getSerializableExtra("pedido");
 
                                 listaPedidos.add(ham_2);
-
-                                Snackbar.make(MiInflater, "IR A PEDIDO", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                                 Intent intent = new Intent(getContext(), Pedido.class);
                                 intent.putExtra("listaPedidos", listaPedidos);
@@ -213,8 +211,6 @@ public class Lista_Menu extends Fragment {
 
             }else if(resultCode == RESULT_CANCELED){
 
-                Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
             }
 
         }
@@ -223,7 +219,6 @@ public class Lista_Menu extends Fragment {
 
             if (resultCode == RESULT_OK){
 
-                Snackbar.make(MiInflater, "Se realizo el pedido final", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                 Message msj = new Message();
                 Bundle datos = new Bundle();
@@ -269,6 +264,8 @@ public class Lista_Menu extends Fragment {
                         listaPedidos.removeAll(listaPedidos);
 
                         progressDialog_envio.dismiss();
+
+                        Toast.makeText(MiInflater.getContext(),"Sus pedido fue realizado",Toast.LENGTH_LONG).show();
                     }
                 };
 
@@ -277,7 +274,6 @@ public class Lista_Menu extends Fragment {
 
             }else if(resultCode == RESULT_CANCELED){
 
-                Snackbar.make(MiInflater, "Se cancelo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
             }
         }

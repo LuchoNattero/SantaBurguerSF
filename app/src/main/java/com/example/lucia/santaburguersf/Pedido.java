@@ -143,7 +143,6 @@ public class Pedido extends AppCompatActivity implements View.OnClickListener{
 
                 boolean error = false;
 
-                Toast.makeText(getApplicationContext(),"Realizo el pedido",Toast.LENGTH_LONG).show();
 
                 if(telefono.getText().toString().isEmpty())
                 {

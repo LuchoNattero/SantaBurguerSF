@@ -108,8 +108,7 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.bt_aclaracion: createLoginDialogoAclaracion();
                 break;
-            case R.id.bt_hacer_pedido: Toast.makeText(v.getContext(),"Su pedido fue realizado",Toast.LENGTH_LONG).show();
-
+            case R.id.bt_hacer_pedido:
 
                 String h;
                 UnPedido nuevo_pedido = new UnPedido();

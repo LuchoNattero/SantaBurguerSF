@@ -66,17 +66,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         />
-    <ToggleButton
 
-        android:id="@+id/tb_ubicacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textOff="Ubicación manual"
-        android:textOn="ubicacion automatica"
-        android:layout_below="@+id/tv_domicilio"
-        android:layout_centerInParent="true"
-
-        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -84,7 +74,7 @@
         android:text="Dirección"
         android:textColor="@color/color_morado"
         android:id="@+id/tv_direccion"
-        android:layout_below="@+id/tb_ubicacion"
+        android:layout_below="@+id/tv_domicilio"
         android:layout_marginLeft="10dp"
         />
     <EditText
@@ -94,8 +84,8 @@
         android:layout_below="@+id/tv_direccion"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-
-        />
+        android:hint="Ej: calle 1234"
+    />
 
 
     <View
@@ -103,9 +93,7 @@
         android:layout_height="5dp"
         android:background="@drawable/sombra"
         android:layout_above="@+id/bt_Confirmar"
-
         android:layout_marginHorizontal="5dp"
-
         />
     <Button
         android:id="@+id/bt_Confirmar"

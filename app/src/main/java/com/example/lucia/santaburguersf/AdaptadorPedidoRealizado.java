@@ -10,9 +10,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lucia.santaburguersf.FireBase.Reference;
+import com.example.lucia.santaburguersf.Fragment.Mi_Cuenta;
 import com.example.lucia.santaburguersf.Fragment.UnPedido;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lucia on 7/2/2018.
@@ -22,6 +26,8 @@ public class AdaptadorPedidoRealizado extends BaseAdapter {
 
     private ArrayList<HistorialPedido> lista_pedido;
     Context context;
+    private Map<String,Integer> l_pedidos = new HashMap<>();
+
 
 
 
@@ -60,17 +66,29 @@ public class AdaptadorPedidoRealizado extends BaseAdapter {
         TextView estado = convertView.findViewById(R.id.tv_estado);
         TextView precio = convertView.findViewById(R.id.tv_precio_realizado);
         TextView lista_pedido = convertView.findViewById(R.id.lv_pedido_realizado);
+        TextView telefono = convertView.findViewById(R.id.lv_telefono_realizado);
+        TextView direccion = convertView.findViewById(R.id.lv_direccion_realizado);
 
 
         lista_pedido.setText("");
+
         for(UnPedido item : h.getLista_pedido()){
 
             lista_pedido.setText(lista_pedido.getText()+ item.getHamburguesa()+" ");
 
+//            l_pedidos.put(item.getHamburguesa(),item.getCantidad());
+
         }
 
-        estado.setText(h.getEstado());
-        precio.setText(String.valueOf("Precio: $" + totalAPagar(h)));
+//        Mi_Cuenta.setPedidos(l_pedidos);
+
+
+
+        estado.setText("Estado: "+h.getEstado());
+        precio.setText(String.valueOf("Monto Total: $" + totalAPagar(h)));
+        telefono.setText("Telefono: "+h.getTelefono());
+        direccion.setText("Dirección: "+h.getDireccion());
+
 
 
         return convertView;

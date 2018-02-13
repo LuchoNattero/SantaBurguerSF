@@ -18,6 +18,7 @@ public class Hamburguesas implements Serializable {
     private int precio;
     private String refImagen;
     private String detalle;
+//    private int id = nombre.hashCode();
     StorageReference storageReferenceHamburguesa;
 
     public Hamburguesas(){}
@@ -31,6 +32,17 @@ public class Hamburguesas implements Serializable {
         this.nombre = nombre;
         this.precio = idDrawable;
         this.refImagen = de;
+    }
+
+    @Override
+    public String toString() {
+        return "Hamburguesas{" +
+                "nombre='" + nombre + '\'' +
+                ", precio=" + precio +
+                ", refImagen='" + refImagen + '\'' +
+                ", detalle='" + detalle + '\'' +
+                ", storageReferenceHamburguesa=" + storageReferenceHamburguesa +
+                '}';
     }
 
     public Hamburguesas(String nombre) {
@@ -81,6 +93,8 @@ public class Hamburguesas implements Serializable {
     public int getId() {
         return nombre.hashCode();
     }
+//
+//    public void setId(int i){this.id = i;}
 
 
     public static Hamburguesas[] ITEMS = {

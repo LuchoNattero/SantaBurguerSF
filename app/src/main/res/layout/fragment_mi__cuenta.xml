@@ -10,13 +10,60 @@
     android:id="@+id/rl_mi_cuenta"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <ListView
+    <TextView
+        android:text="PEDIDOS REALIZADOS"
+        android:id="@+id/tv_titulo_mi_cuenta"
+        android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/lv_informacion"
-        android:layout_marginBottom="200dp"/>
+        android:layout_below="@+id/tv_lista_pedidos"
+        android:background="@color/color_morado"
+        android:textColor="#ffffff"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        />
+    <ListView
+        android:layout_below="@+id/tv_titulo_mi_cuenta"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/lv_informacion" />
+    <View
+        android:layout_width="match_parent"
+        android:id="@+id/sombra_mi_cuenta"
+        android:layout_height="15dp"
+        android:background="@drawable/sombra"
+        android:layout_below="@+id/lv_informacion"
+        android:layout_marginHorizontal="5dp"
+        />
 
+    <TextView
+        android:text="INFORMACION DEL USUARIO"
+        android:id="@+id/tv_titulo_usuario"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sombra_mi_cuenta"
+        android:background="@color/color_morado"
+        android:textColor="#ffffff"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+
+        />
+
+    <TextView
+        android:text="Nombre:"
+        android:id="@+id/tv_nombre_usuario"
+        android:textSize="20dp"
+        android:layout_width= "match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_titulo_usuario"
+        android:background="@color/color_morado"
+        android:textColor="#ffffff"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        />
 
 </RelativeLayout>
 

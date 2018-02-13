@@ -1,8 +1,10 @@
 package com.example.lucia.santaburguersf.Fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.lucia.santaburguersf.AdaptadorHamburguesas;
 import com.example.lucia.santaburguersf.AdaptadorPedido;
@@ -25,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,14 +37,13 @@ import java.util.ArrayList;
 public class Mi_Cuenta extends Fragment {
 
     private View MiInflater;
-    private Intent intent;
-    private ArrayList<UnPedido> lista;
+
     private ListView lista_pedidos;
     private AdaptadorPedidoRealizado adpPedido;
     private static ArrayList<HistorialPedido> lista_historialPedido = new ArrayList();
     private FirebaseDatabase database;
-
-
+    private DatabaseReference pedidoRef;
+    private ProgressDialog progressDialog_principal;
     public Mi_Cuenta() {
         // Required empty public constructor
     }
@@ -50,44 +54,67 @@ public class Mi_Cuenta extends Fragment {
          // Inflate the layout for this fragment
         MiInflater = inflater.inflate(R.layout.fragment_mi__cuenta, container, false);
 
-
-//        Snackbar.make(MiInflater, "paso el intent", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         database = FirebaseDatabase.getInstance();
 
+        progressDialog_principal = new ProgressDialog(getContext());
 
-        DatabaseReference pedidoRef = database.getReference(Reference.USUARIO_REFERENCE+"/"+Reference.RODRIGO_REFERENCE+"/pedidos");
-
-        pedidoRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                lista_historialPedido.removeAll(lista_historialPedido);
-
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-                    HistorialPedido historialPedido = snapshot.getValue(HistorialPedido.class);
-                   lista_historialPedido.add(historialPedido);
-                }
-                adpPedido.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        pedidoRef = database.getReference(Reference.USUARIO_REFERENCE+"/"+Reference.RODRIGO_REFERENCE+"/pedidos");
 
 
         lista_pedidos = MiInflater.findViewById(R.id.lv_informacion);
 
         adpPedido = new AdaptadorPedidoRealizado(getContext(),lista_historialPedido);
         lista_pedidos.setAdapter(adpPedido);
+
+
+        TextView nombreUs = MiInflater.findViewById(R.id.tv_nombre_usuario);
+
+        nombreUs.setText("Nombre: "+ Reference.RODRIGO_REFERENCE);
+
+        progressDialog_principal.setTitle("Cargando");
+        progressDialog_principal.setMessage("Se esta cargando los pedidos");
+        progressDialog_principal.setCancelable(false);
+        progressDialog_principal.show();
+
+        Handler handler = new Handler();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+
+                pedidoRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        lista_historialPedido.removeAll(lista_historialPedido);
+
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                            HistorialPedido historialPedido = snapshot.getValue(HistorialPedido.class);
+                            lista_historialPedido.add(historialPedido);
+                        }
+                        adpPedido.notifyDataSetChanged();
+                        progressDialog_principal.dismiss();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+
+
+
         registerForContextMenu(lista_pedidos);
         lista_pedidos.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-
         return MiInflater;
     }
+
 
 }

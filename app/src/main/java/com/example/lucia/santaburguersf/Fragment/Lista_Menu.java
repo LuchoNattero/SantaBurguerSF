@@ -1,11 +1,17 @@
 package com.example.lucia.santaburguersf.Fragment;
 
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -13,7 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.lucia.santaburguersf.AdaptadorHamburguesas;
@@ -47,9 +56,10 @@ public class Lista_Menu extends Fragment {
     private GridView gridView;
     private AdaptadorHamburguesas adaptador;
     private View MiInflater;
-    private ArrayList<UnPedido> listaPedidos = new ArrayList();
+    public static ArrayList<UnPedido> listaPedidos = new ArrayList();
     private ArrayList<HistorialPedido> lista_historial = new ArrayList();
     private FirebaseDatabase database;
+    private ProgressDialog progressDialog_principal,progressDialog_envio;
 
 
     public Lista_Menu() {
@@ -61,18 +71,29 @@ public class Lista_Menu extends Fragment {
         // Inflate the layout for this fragment
         MiInflater = inflater.inflate(R.layout.fragment_lista__menu, container, false);
 
+        progressDialog_principal = new ProgressDialog(this.getContext());
+        progressDialog_envio = new ProgressDialog(this.getContext());
         FloatingActionButton fab =  MiInflater.findViewById(R.id.fab_button_pedidos);
+
+
 
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getContext(), Pedido.class);
-                intent.putExtra("listaPedidos", listaPedidos);
-                startActivityForResult(intent,1);
+                if(listaPedidos.size() == 0) {
+
+                    createAdvertenciaDialogo();
+                }
+                else {
+                    Intent intent = new Intent(getContext(), Pedido.class);
+                    intent.putExtra("listaPedidos", listaPedidos);
+                    startActivityForResult(intent, 1);
+                }
             }
         });
+
 
         lista_hamburguesa = new ArrayList<>();
 
@@ -86,27 +107,40 @@ public class Lista_Menu extends Fragment {
 
         gridView.setAdapter(adaptador);
 
-        database.getReference(Reference.HAMBURGUESA_REFERENCE).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                lista_hamburguesa.removeAll(lista_hamburguesa);
+        progressDialog_principal.setTitle("Cargando");
+        progressDialog_principal.setMessage("Se esta cargando la aplicacion, espere un momento por favor");
+        progressDialog_principal.setCancelable(false);
+        progressDialog_principal.show();
 
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+        Handler handler = new Handler();
 
-                    Hamburguesas hamburguesa = snapshot.getValue(Hamburguesas.class);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
 
-                    lista_hamburguesa.add(hamburguesa);
+                    database.getReference(Reference.HAMBURGUESA_REFERENCE).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            lista_hamburguesa.removeAll(lista_hamburguesa);
+
+                            for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+
+                                Hamburguesas hamburguesa = snapshot.getValue(Hamburguesas.class);
+
+                                lista_hamburguesa.add(hamburguesa);
+                            }
+                            adaptador.notifyDataSetChanged();
+                            progressDialog_principal.dismiss();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
-                adaptador.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
+            });
 
         registerForContextMenu(gridView);
 
@@ -189,37 +223,57 @@ public class Lista_Menu extends Fragment {
 
             if (resultCode == RESULT_OK){
 
-                    Snackbar.make(MiInflater, "Se realizo el pedido final", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(MiInflater, "Se realizo el pedido final", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                Message msj = new Message();
+                Bundle datos = new Bundle();
+                datos.putString("direccion", String.valueOf(data.getSerializableExtra("direccion")));
+                datos.putString("telefono", String.valueOf(data.getSerializableExtra("telefono")));
+
+                msj.setData(datos);
+
+                progressDialog_envio.setTitle("Enviando Pedido");
+                progressDialog_envio.setMessage("Se esta enviando el pedido");
+                progressDialog_envio.setCancelable(false);
+                progressDialog_envio.show();
+
+                Handler handler = new Handler(){
+
+                    @Override
+                    public void handleMessage(Message msj){
+
+                        Bundle datos = msj.getData();
+                        DatabaseReference pedidoUsuarioRef = database.getReference(Reference.USUARIO_REFERENCE+"/"+Reference.RODRIGO_REFERENCE+"/pedidos");
+                        HistorialPedido historialPedido = new HistorialPedido();
+
+                        historialPedido.setDireccion(datos.getString("direccion"));
+                        historialPedido.setTelefono(datos.getString("telefono"));
+                        historialPedido.setEstado("Pendiente");
+                        historialPedido.setLista_pedido(listaPedidos);
+                        historialPedido.setPrecio(totalAPagar());
+
+                        Map<String, Object> childUpdate = new HashMap<>();
+
+                        String id_pedido = historialPedido.getId();
+
+                        childUpdate.put(id_pedido,historialPedido);
+                        pedidoUsuarioRef.updateChildren(childUpdate);
+
+                        DatabaseReference pedidoRef = database.getReference(Reference.PEDIDOS_REFERENCE);
 
 
-                    DatabaseReference pedidoUsuarioRef = database.getReference(Reference.USUARIO_REFERENCE+"/"+Reference.RODRIGO_REFERENCE+"/pedidos");
+                        Map<String, Object> pedidoUpdate = new HashMap<>();
 
-                    HistorialPedido historialPedido = new HistorialPedido();
+                        pedidoUpdate.put("Rodrigo",historialPedido);
+                        pedidoRef.child(id_pedido+"/").updateChildren(pedidoUpdate);
+                        listaPedidos.removeAll(listaPedidos);
 
-                    historialPedido.setDireccion(data.getStringExtra("direccion"));
-                    historialPedido.setTelefono(data.getStringExtra("telefono"));
-                    historialPedido.setEstado("Pendiente");
-                    historialPedido.setLista_pedido(listaPedidos);
-                    historialPedido.setPrecio(totalAPagar());
+                        progressDialog_envio.dismiss();
+                    }
+                };
 
+                handler.sendMessage(msj);
 
-                    Map<String, Object> childUpdate = new HashMap<>();
-
-                    String id_pedido = historialPedido.getId();
-
-                    childUpdate.put(id_pedido,historialPedido);
-                    pedidoUsuarioRef.updateChildren(childUpdate);
-
-                    DatabaseReference pedidoRef = database.getReference(Reference.PEDIDOS_REFERENCE);
-
-
-                    Map<String, Object> pedidoUpdate = new HashMap<>();
-
-                    pedidoUpdate.put("Rodrigo",historialPedido);
-                    pedidoRef.child(id_pedido+"/").updateChildren(pedidoUpdate);
-
-
-                    listaPedidos.removeAll(listaPedidos);
 
             }else if(resultCode == RESULT_CANCELED){
 
@@ -250,5 +304,29 @@ public class Lista_Menu extends Fragment {
         }
 
         return total;
+    }
+
+    public void createAdvertenciaDialogo() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.dialog_advertencia, null);
+        builder.setTitle("¡Advertencia!");
+        builder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        builder.setView(v);
+
+
+        builder.show();
     }
 }

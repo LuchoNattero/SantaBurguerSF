@@ -1,5 +1,6 @@
 package com.example.lucia.santaburguersf.Fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -76,7 +77,6 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
 
         itemDetallado = Lista_Menu.getItem(intent.getIntExtra(EXTRA_PARAM_ID, 0));
 
-
         imagenExtendida =  findViewById(R.id.imagen_extendida);
 
         detalles.setText(itemDetallado.getDetalle());
@@ -123,8 +123,8 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
 
                 intent.putExtra("pedido",nuevo_pedido);
                 intent.putExtra("RESULTADO",2);
-                setResult(RESULT_OK,intent);
 
+                setResult(RESULT_OK, intent);
                 finish();
             break;
         }
@@ -139,20 +139,20 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
         View v = inflater.inflate(R.layout.dialog_cantidad, null);
 
 
-        final Integer[] arreglo = new Integer[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+        final String[] arreglo = new String[] {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
         final ListView lista = v.findViewById(R.id.sv_cantidad);
-        ArrayAdapter adapterList = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,arreglo);
-        lista.setAdapter(adapterList);
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                cantidad_dialogo = arreglo[position];
-                Toast.makeText(view.getContext(),"cantidad " + cantidad_dialogo,Toast.LENGTH_LONG).show();
+        ArrayAdapter adapterList = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,arreglo);
+
+        builder.setTitle("Cantidad");
+        builder.setAdapter(adapterList, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                cantidad_dialogo = Integer.valueOf(arreglo[which]);
+
+                dialog.cancel();
             }
         });
-
-
         builder.setView(v);
 
 
@@ -167,10 +167,20 @@ public class ActividadDetalle extends AppCompatActivity implements View.OnClickL
 
         View v = inflater.inflate(R.layout.dialog_aclaracion, null);
 
-        EditText aclaracion = v.findViewById(R.id.ed_aclaracion_dialog);
+        final EditText aclaracion = v.findViewById(R.id.ed_aclaracion_dialog);
+
+        builder.setTitle("Aclaracion");
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                aclaracion_dialogo = aclaracion.getText().toString();
 
 
-        aclaracion_dialogo = aclaracion.getText().toString();
+            }
+        });
+
 
         builder.setView(v);
 

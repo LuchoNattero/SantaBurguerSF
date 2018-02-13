@@ -1,6 +1,7 @@
 package com.example.lucia.santaburguersf;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.lucia.santaburguersf.Fragment.ActividadDetalle;
+import com.example.lucia.santaburguersf.Fragment.Lista_Menu;
 import com.example.lucia.santaburguersf.Fragment.UnPedido;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Pedido extends AppCompatActivity implements View.OnClickListener{
@@ -43,6 +49,7 @@ public class Pedido extends AppCompatActivity implements View.OnClickListener{
         telefono = findViewById(R.id.ed_telefono);
         direccion = findViewById(R.id.ed_direccion);
 
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.tb_pedido);
         setSupportActionBar(myToolbar);
 
@@ -58,7 +65,7 @@ public class Pedido extends AppCompatActivity implements View.OnClickListener{
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                createLoginDialogoEditar();
+                createLoginDialogoEditar(position);
 
             }
         });
@@ -78,15 +85,48 @@ public class Pedido extends AppCompatActivity implements View.OnClickListener{
 
         return total;
     }
-    public void createLoginDialogoEditar() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public void borrarPedido(int position){
+
+        lista.remove(position);
+        adpPedido = new AdaptadorPedido(getBaseContext(),lista);
+        adpPedido.notifyDataSetChanged();
+        listaElementos.setAdapter(adpPedido);
+        registerForContextMenu(listaElementos);
+        listaElementos.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        Lista_Menu.listaPedidos.remove(position);
+
+    }
+    public void createLoginDialogoEditar(final int position) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
 
         View v = inflater.inflate(R.layout.dialog_pedido, null);
 
+        Button boton_borrar = v.findViewById(R.id.bt_borrar_dialog_pedido);
 
+        builder.setTitle("Opciones");
+
+
+        boton_borrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                borrarPedido(position);
+
+            }
+        });
+
+        builder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        dialog.cancel();
+                    }
+                });
         builder.setView(v);
 
 
@@ -115,9 +155,14 @@ public class Pedido extends AppCompatActivity implements View.OnClickListener{
                     direccion.setError("Debe completar el campo");
                     error = true;
                 }
+                if(lista.size() == 0){
+                    error = true;
+                    createAdvertenciaDialogo();
+                }
 
                 if(!error)
                 {
+
                     intent.putExtra("telefono",telefono.getText().toString());
                     intent.putExtra("direccion",direccion.getText().toString());
                     setResult(RESULT_OK,intent);
@@ -128,5 +173,29 @@ public class Pedido extends AppCompatActivity implements View.OnClickListener{
         }
 
 
+    }
+
+    public void createAdvertenciaDialogo() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.dialog_advertencia, null);
+        builder.setTitle("¡Advertencia!");
+        builder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        builder.setView(v);
+
+
+        builder.show();
     }
 }

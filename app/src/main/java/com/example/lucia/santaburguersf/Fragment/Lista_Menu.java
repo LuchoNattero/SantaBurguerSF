@@ -1,6 +1,8 @@
 package com.example.lucia.santaburguersf.Fragment;
 
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +49,7 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -266,6 +270,25 @@ public class Lista_Menu extends Fragment {
                         progressDialog_envio.dismiss();
 
                         Toast.makeText(MiInflater.getContext(),"Sus pedido fue realizado",Toast.LENGTH_LONG).show();
+
+                        NotificationCompat.Builder mBuilder;
+                        NotificationManager mNotifyMgr =(NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
+
+                        int icono = R.drawable.ic_action_que_pedir;
+                        Intent i=new Intent(getContext(), Lista_Menu.class);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, i, 0);
+
+                        mBuilder =new NotificationCompat.Builder(getContext())
+                                .setContentIntent(pendingIntent)
+                                .setSmallIcon(icono)
+                                .setContentTitle("SantaBurguerSF")
+                                .setContentText("Su pedido fue realizado con exito")
+                                .setVibrate(new long[] {100, 250, 100, 500})
+                                .setAutoCancel(true);
+
+
+
+                        mNotifyMgr.notify(1, mBuilder.build());
                     }
                 };
 
